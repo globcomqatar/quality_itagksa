@@ -5,3 +5,7 @@
 tags
 node_modules
 __pycache__
+# bmad-fb working state (local only)
+.fb/
+# local-only agent instructions
+CLAUDE.md

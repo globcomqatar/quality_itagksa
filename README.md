@@ -28,6 +28,14 @@ Pre-commit is configured to use the following tools for checking and formatting 
 - prettier
 - pyupgrade
 
+## Changelog
+
+> Every push to GitHub must bump `__version__` in `quality_itagksa/__init__.py` and add an entry here. See `CLAUDE.md`.
+
+### 0.0.1 — 2026-06-29
+- Initial port of Quality Module from `quality_itagqatar` (re-namespaced for KSA).
+- Added `Quality Verifier` role patch (`patches/v1_0/create_quality_verifier_role.py`).
+
 ### License
 
 mit

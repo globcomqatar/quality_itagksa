@@ -1,3 +1,5 @@
+from quality_itagksa.quality_itag_ksa.inspection.constants import INSPECTION_FORMS
+
 app_name = "quality_itagksa"
 app_title = "Quality ITAG KSA"
 app_publisher = "Globcom Qatar"
@@ -8,7 +10,42 @@ app_license = "mit"
 # Apps
 # ------------------
 
-# required_apps = []
+required_apps = ["erpnext"]
+
+fixtures = [
+	{
+		"dt": "Custom Field",
+		"filters": [["module", "=", "Quality ITAG KSA"]],
+	},
+	{
+		"dt": "Property Setter",
+		"filters": [["module", "=", "Quality ITAG KSA"]],
+	},
+]
+
+_SHARED_CONNECTIONS_JS = "public/js/quality_connections.js"
+doctype_js = {
+	"Job Card": [_SHARED_CONNECTIONS_JS, "public/js/job_card.js"],
+	"Quality Inspection": [_SHARED_CONNECTIONS_JS, "public/js/quality_inspection.js"],
+	**{dt: "public/js/inspection_report_common.js" for dt in INSPECTION_FORMS},
+}
+
+override_doctype_dashboards = {
+	"Quality Inspection": "quality_itagksa.quality_itag_ksa.quality_inspection.dashboard.get_dashboard_data",
+}
+
+_QUALITY_VERIFICATION_SERVICE = "quality_itagksa.quality_itag_ksa.services.quality_verification"
+_VALIDATE_QUALITY_VERIFICATION = f"{_QUALITY_VERIFICATION_SERVICE}.validate_quality_verification"
+_SET_PURCHASE_QUALITY_GATE = f"{_QUALITY_VERIFICATION_SERVICE}.set_purchase_quality_gate"
+doc_events = {
+	"Stock Entry": {
+		"before_submit": _VALIDATE_QUALITY_VERIFICATION,
+	},
+	"Purchase Receipt": {
+		"validate": _SET_PURCHASE_QUALITY_GATE,
+		"before_submit": _VALIDATE_QUALITY_VERIFICATION,
+	},
+}
 
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [
